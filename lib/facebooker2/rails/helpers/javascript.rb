@@ -30,6 +30,16 @@ module Facebooker2
                 #{"channelUrl : '#{channel_url}', // add channelURL to avoid IE redirect problems" unless channel_url.blank?}
                 xfbml  : #{xfbml}  // parse XFBML
               });
+
+              // This is a patch for IE error:
+              //  Invalid Argument -- Given URL is not allowed by the Application
+              //
+              // See the following discussions for similar errors:
+              //  http://forum.developers.facebook.net/viewtopic.php?id=60420
+              //  http://forum.developers.facebook.net/viewtopic.php?id=70773
+              //  http://bugs.developers.facebook.net/show_bug.cgi?id=10101
+              FB.XD._origin = (window.location.protocol + '//' + window.location.host + '/' + FB.guid());
+
               #{extra_js}
             };
 
